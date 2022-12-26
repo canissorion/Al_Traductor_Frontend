@@ -52,3 +52,10 @@ class ChangeTargetLanguageEvent extends HomeEvent {
 
 /// Swap the source and target languages.
 class SwapLanguagesEvent extends HomeEvent {}
+
+/// STT Event
+/// Event to start the speech to text process.
+class StartSTTEvent extends HomeEvent {}
+
+/// Evento to stop the speech to text process.
+class StopSTTEvent extends HomeEvent {}

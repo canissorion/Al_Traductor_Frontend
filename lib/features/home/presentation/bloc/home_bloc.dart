@@ -53,7 +53,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         model: event.model,
       ));
       result!.fold(
-        (failure) => emit(HomeInitial()),
+        (failure) => emit(HomeError()),
         (translation) => emit(
           HomeLoaded(
             translationEntity: translation,
@@ -92,6 +92,54 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           objetivo: state.inicial,
         ),
       );
+    });
+
+    /// Start STT
+    on<StartSTTEvent>((event, emit) async {
+      if (state is HomeWithServer) {
+        emit(
+          HomeWithServer(
+            status: (state as HomeWithServer).status,
+            inicial: state.inicial,
+            objetivo: state.objetivo,
+            sttOn: true,
+          ),
+        );
+      }
+      if (state is HomeLoaded) {
+        emit(
+          HomeLoaded(
+            translationEntity: (state as HomeLoaded).translationEntity,
+            inicial: state.inicial,
+            objetivo: state.objetivo,
+            sttOn: true,
+          ),
+        );
+      }
+    });
+
+    /// Stop STT
+    on<StopSTTEvent>((event, emit) async {
+      if (state is HomeWithServer) {
+        emit(
+          HomeWithServer(
+            status: (state as HomeWithServer).status,
+            inicial: state.inicial,
+            objetivo: state.objetivo,
+            sttOn: false,
+          ),
+        );
+      }
+      if (state is HomeLoaded) {
+        emit(
+          HomeLoaded(
+            translationEntity: (state as HomeLoaded).translationEntity,
+            inicial: state.inicial,
+            objetivo: state.objetivo,
+            sttOn: false,
+          ),
+        );
+      }
     });
   }
 
